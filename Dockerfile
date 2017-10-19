@@ -1,11 +1,19 @@
 FROM alpine:3.6
-LABEL Maintainer="Tim de Pater <code@trafex.nl>" \
-      Description="Lightweight container with Nginx 1.12 & PHP-FPM 7.1 based on Alpine Linux."
+LABEL Maintainer="Jan Ritter <git@janrtr.de>" \
+      Description="Lightweight container with Nginx 1.12 & PHP-FPM 7.1 based on Alpine Linux, optimized for Symfony"
 
 # Install packages
-RUN apk --no-cache add php7 php7-fpm php7-mysqli php7-json php7-openssl php7-curl \
+RUN apk --no-cache add php7 php7-fpm php7-mysqli php7-json php7-openssl php7-curl php7-pdo \
     php7-zlib php7-xml php7-phar php7-intl php7-dom php7-xmlreader php7-ctype \
     php7-mbstring php7-gd nginx supervisor curl
+
+#Configure nginx user
+RUN adduser -D -u 1000 -g 'www' www
+
+#Add nginx web folder
+RUN mkdir /www
+RUN chown -R www:www /var/lib/nginx
+RUN chown -R www:www /www
 
 # Configure nginx
 COPY config/nginx.conf /etc/nginx/nginx.conf
@@ -17,10 +25,13 @@ COPY config/php.ini /etc/php7/conf.d/zzz_custom.ini
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+# Add Composer
+RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+
 # Add application
-RUN mkdir -p /var/www/html
-WORKDIR /var/www/html
-COPY src/ /var/www/html/
+RUN mkdir -p /www/symfony
+WORKDIR /www/symfony
+COPY src/ /www/symfony/web/
 
 EXPOSE 80 443
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
