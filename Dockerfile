@@ -3,9 +3,43 @@ LABEL Maintainer="Jan Ritter <git@janrtr.de>" \
       Description="Lightweight container with Nginx 1.12 & PHP-FPM 7.1 based on Alpine Linux, optimized for Symfony"
 
 # Install packages
-RUN apk --no-cache add php7 php7-fpm php7-mysqli php7-json php7-openssl php7-curl php7-pdo \
-    php7-zlib php7-xml php7-phar php7-intl php7-dom php7-xmlreader php7-ctype \
-    php7-mbstring php7-gd nginx supervisor curl
+RUN apk --no-cache add php7 \
+    php7-soap \
+	php7-gmp \
+	php7-pdo_odbc \
+	php7-zip \
+	php7-sqlite3 \
+	php7-pdo_pgsql \
+	php7-bcmath \
+	php7-pdo_mysql \
+	php7-pdo_sqlite \
+	php7-gettext \
+	php7-xmlwriter \
+	php7-tokenizer \
+	php7-xmlrpc \
+	php7-bz2 \
+	php7-pdo_dblib \
+	php7-session \
+	php7-redis \
+    php7-mcrypt \
+    php7-fpm \
+    php7-mysqli \
+    php7-json \
+    php7-openssl\
+    php7-curl\
+    php7-pdo \
+    php7-zlib \
+    php7-xml \
+    php7-phar \
+    php7-intl \
+    php7-dom \
+    php7-xmlreader \
+    php7-ctype \
+    php7-mbstring \
+    php7-gd \
+    nginx \
+    supervisor \
+    curl
 
 #Configure nginx user
 RUN adduser -D -u 1000 -g 'www' www
