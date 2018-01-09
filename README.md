@@ -7,6 +7,21 @@ Example PHP-FPM 7.1 & Nginx 1.12 setup for Docker, build on [Alpine Linux](http:
 
 Usage
 -----
-Start the Docker containers:
+Using own SSL Cert:
+- Link the crt file to /etc/nginx/server.crt
+- Link the key file to /etc/nginx/server.key
 
-    docker run -p 80:80 janrtr/docker-symfony-php7-composer
+Example docker-compose
+-----------------------
+```
+version: '2'
+services:
+  web:
+    image: "janrtr/docker-symfony-php7-composer"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "./path/to/your/cert.crt:/etc/nginx/server.crt"
+      - "./path/to/your/cert.key:/etc/nginx/server.key"
+```
