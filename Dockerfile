@@ -53,8 +53,8 @@ RUN chown -R www:www /www
 COPY config/nginx.conf /etc/nginx/nginx.conf
 
 # Copy self signed cert
-COPY cert/server.crt /etc/nginx/server.crt
-COPY cert/server.key /etc/nginx/server.key
+#COPY cert/server.crt /etc/nginx/server.crt
+#COPY cert/server.key /etc/nginx/server.key
 
 # Configure PHP-FPM
 COPY config/fpm-pool.conf /etc/php7/php-fpm.d/zzz_custom.conf
@@ -71,5 +71,5 @@ RUN mkdir -p /www/symfony
 WORKDIR /www/symfony
 COPY src/ /www/symfony/web/
 
-EXPOSE 80 443
+EXPOSE 80
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
